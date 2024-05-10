@@ -1,6 +1,6 @@
 <template>
     <el-main>
-        <!-- 搜索栏456 -->
+        <!-- 搜索栏898999 -->
         <el-form :model="searchParm" :inline="true" size="default">
             <el-form-item>
                 <el-input placeholder="请输入商品名称" v-model="searchParm.goodsName"></el-input>
