@@ -174,7 +174,7 @@ const currentChange = (page: number) => {
     searchParm.currentPage = page;
     getList()
 }
-//23
+
 // 搜索
 const searchBtn = () => {
     // 后端会自动根据是否传入categoryname分辨出是模糊查询，还是查询所有数据
