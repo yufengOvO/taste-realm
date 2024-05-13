@@ -12,14 +12,15 @@
         </el-form>
 
         <!-- 表格 -->
-        <el-table :height="tableHeight"  :data="tableList" border stripe>
+        <el-table :height="tableHeight" :data="tableList" border stripe>
             <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="nickName" label="昵称"></el-table-column>
-            <el-table-column prop="phonr" label="电话"></el-table-column>
+            <el-table-column prop="phone" label="电话"></el-table-column>
             <el-table-column prop="username" label="账户"></el-table-column>
             <el-table-column prop="status" label="停用">
                 <template #default="scope">
-                    <el-switch v-model="scope.row.status" :active-value="'0'" :inactive-value="'1'" />
+                    <el-switch v-model="scope.row.status" :active-value="'0'" :inactive-value="'1'"
+                        :before-change="beforeStatus" @change="changeStatus(scope.row.status, scope.row.userId)" />
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="250">
@@ -42,9 +43,14 @@
 
 import { reactive, onMounted, ref, nextTick } from "vue";
 // 引入api接口
-import { getListApi } from "@/api/wxuser/index";
+import { getListApi, stopUserApi, updatePasseordApi, deleteApi } from "@/api/wxuser/index";
 // 引入用户数据
 import { WxUser } from "@/api/wxuser/WxUserModel";
+// 引入消息弹窗
+import useWarnConfirm from "@/hooks/useWarnConfirm";
+// 引入消息提示组件
+import { ElMessage } from "element-plus";
+const { global } = useWarnConfirm();
 
 
 //搜索参数
@@ -61,12 +67,30 @@ const tableHeight = ref(0);
 // 表格数据
 const tableList = ref([]);
 // 重置密码
-const resetPas = (row: WxUser) => {
-    console.log(row);
+const resetPas = async (row: WxUser) => {
+    let confirm = await global.$warningConfirm("确定重置密码吗？重置后的密码为【666666】");
+    if (confirm) {
+        let res = await updatePasseordApi({
+            userId: row.userId,
+        });
+        if (res && res.code == 200) {
+            ElMessage.success(res.msg)
+            getList()
+        }
+    }
 };
 // 删除
-const deleteBtn = (row: WxUser) => {
-    console.log(row);
+const deleteBtn = async (row: WxUser) => {
+    let confirm = await global.$warningConfirm("确定删除该用户吗？");
+    if (confirm) {
+        let res = await deleteApi({
+            userId: row.userId,
+        });
+        if (res && res.code == 200) {
+            ElMessage.success(res.msg)
+            getList()
+        }
+    }
 
 }
 //搜索
@@ -95,10 +119,34 @@ onMounted(() => {
     getList()
     // 计算表格高度
     nextTick(() => {
-        tableHeight.value =window.innerHeight -200;
+        tableHeight.value = window.innerHeight - 200;
 
     });
 })
+
+
+// 停用之前
+const beforeStatus = async () => {
+    let confirm = await global.$warningConfirm("确定此操作吗？");
+    return new Promise((resolve, reject) => {
+        if (confirm) {
+            return resolve(confirm);
+        } else {
+            return reject(confirm)
+        }
+    })
+
+}
+// 停用之后
+const changeStatus = async (type: string, goodsId: string) => {
+    let res = await stopUserApi({
+        userId: goodsId,
+        status: type
+    });
+    if (res && res.code == 200) {
+        getList();
+    }
+}
 
 // 页面容量改变时触发
 const sizeChange = (size: number) => {
