@@ -62,8 +62,10 @@
                     <el-tag v-if="scope.row.status == '0'" effect="dark">启用</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="220" align="center">
+            <el-table-column label="操作" width="320" align="center">
                 <template #default="scope">
+                    <el-button type="success" icon="Setting" size="default"
+                        @click="assignBtn(scope.row)">分配菜单</el-button>
                     <el-button type="primary" icon="Edit" size="default" @click="editBtn(scope.row)">编辑</el-button>
                     <el-button type="danger" icon="Delete" size="default" @click="deleteBtn(scope.row)">删除</el-button>
                 </template>
@@ -74,6 +76,8 @@
             :current-page.sync="searchParm.currentPage" :page-sizes="[10, 20, 40, 80, 100]"
             :page-size="searchParm.pageSize" layout="total,sizes,prev,pager,next,jumper" :total="searchParm.total"
             background></el-pagination>
+            <!-- 分配菜单 -->
+            <AssignTree ref="assignTree"></AssignTree>
     </el-main>
 </template>
 
@@ -92,6 +96,9 @@ import { ElMessage, FormInstance } from "element-plus";
 
 // 引入管理员管理api接口
 import { addAdminUserApi, deleteAdminApi, editAdminApi, getListApi } from "@/api/user/index";
+// 引入·分配树
+import AssignTree from "./AssignTree.vue";
+const assignTree = ref()
 
 //引入管理员数据类的user
 import { User } from "@/api/user/UserModel";
@@ -104,13 +111,6 @@ import useWarnConfirm from '@/hooks/useWarnConfirm'
 //获取全局
 const { global } = useWarnConfirm()
 const addRef = ref<FormInstance>()
-
-
-
-
-
-
-
 //获取弹框属性
 // const { dialog, onClose, onConfirm } = useDialog();
 const { dialog, onClose } = useDialog();
@@ -126,6 +126,11 @@ const addBtn = () => {
     // 弹窗可见
     dialog.visible = true;
 };
+// 分配菜单
+const assignBtn = (row: User) => {
+    console.log(row)
+    assignTree.value.show(row)
+}
 
 //搜索框绑定的数据
 const searchParm = reactive({
@@ -238,13 +243,13 @@ const deleteBtn = async (row: User) => {
 }
 //页容量改变触发
 const sizeChange = (size: number) => {
-    searchParm.pageSize=size
+    searchParm.pageSize = size
     getList()
     // console.log(size)
 }
 //页数改变触发
 const currentChange = (page: number) => {
-    searchParm.currentPage=page
+    searchParm.currentPage = page
     getList()
     // console.log(page)
 }

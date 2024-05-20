@@ -2,7 +2,8 @@ import { createApp } from 'vue'
 //import './style.css'
 import App from './App.vue'
 
-
+// 引入持久化插件
+// import piniaPluginPersistedstate from 'pinia-pl'
 
 
 

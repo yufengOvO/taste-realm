@@ -6,10 +6,15 @@
         </el-aside>
         <el-container>
             <el-header class="header">
-                <!-- 使用折叠图标 -->
-                <Collapse></Collapse>
-                <!-- 使用面包屑导航组件 -->
-                <BreadCrumb></BreadCrumb>
+                <div class="header-left">
+                    <!-- 使用折叠图标 -->
+                    <Collapse></Collapse>
+                    <!-- 使用面包屑导航组件 -->
+                    <BreadCrumb></BreadCrumb>
+
+                </div>
+                <!-- 退出登录 -->
+                <Logout></Logout>
             </el-header>
             <el-main class="mymain">
                 <!-- 显示菜单页面 -->
@@ -19,6 +24,8 @@
 </template>
 
 <script setup lang="ts">
+// 引入退出登录
+import Logout from "./Logout.vue";
 // 导入菜单组件
 import Menu from './Menu.vue';
 //导入折叠图标
@@ -42,11 +49,19 @@ import BreadCrumb from './BreadCrumb.vue';
         display: flex;
         align-items: center;
         color: #0c0c0c;
+        justify-content: space-between;
+
+        .header-left {
+            display: flex;
+            align-items: center;
+
+        }
     }
 
     .mymain {
         //background-color: seagreen;
         padding: 0;
     }
+
 }
 </style>

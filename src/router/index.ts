@@ -4,7 +4,17 @@ import Layout from '@/layout/Index.vue'
 // 路由规则
 const routes: Array<RouteRecordRaw> = [
     {
-        path: '/',
+        path: "/",
+        redirect: 'login',
+        name: "/"
+
+    }, {
+        path: "/login",
+        component: () => import('@/views/login/login.vue'),
+        name: "login"
+    },
+    {
+        path: '/dashboard',
         component: Layout,
         redirect: '/dashboard',
         children: [

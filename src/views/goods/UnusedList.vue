@@ -1,6 +1,6 @@
 <template>
     <el-main>
-        <!-- 搜索栏787 -->
+        <!-- 搜索栏-->
         <el-form :model="searchParm" :inline="true" size="default">
             <el-form-item>
                 <el-input placeholder="请输入商品名称" v-model="searchParm.goodsName"></el-input>
@@ -32,9 +32,9 @@
             </el-table-column>
             <el-table-column prop="userName" label="发布人">
             </el-table-column>
-            <el-table-column prop="phone" label="发布人电话">
+            <el-table-column prop="phone" label="电话">
             </el-table-column>
-            <el-table-column prop="wxNum" label="发布人微信">
+            <el-table-column prop="wxNum" label="微信号">
             </el-table-column>
             <el-table-column prop="address" label="商品地址">
             </el-table-column>
