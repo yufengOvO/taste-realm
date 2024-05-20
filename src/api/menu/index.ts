@@ -12,6 +12,16 @@ export const addApi = (parm : Menu) => {
 }
 
 // 查询
-// export const listApi = () => {
-//     return http.get("/api/menu/list")
-// }
+export const listApi = () => {
+    return http.get("/api/menu/list")
+}
+
+// 编辑
+export const editApi = (parm : Menu) => {
+    return http.put("/api/menu",parm)
+}
+
+// 删除
+export const deleteApi = (parm : Menu) => {
+    return http.get(`/api/menu/${parm.menuId}`)
+}

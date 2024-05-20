@@ -1,7 +1,39 @@
 <template>
     <el-main>
+
         <!-- 新增按钮 -->
         <el-button type="primary" icon="Plus" @click="addBtn" size="default" >新增</el-button>
+
+        <!-- 表格 -->
+        <el-table :tree-props="{children:'children',hasChildren:'hasChildren'}" row-key="menuId" :data="tableList"  border stripe>
+            <el-table-column prop="title" label="菜单名称"></el-table-column>
+            <el-table-column prop="type" label="菜单类型">
+                <template #default="scope">
+                    <el-tag v-if="scope.row.type == '1'" type="success" size="default">菜单</el-tag>
+                    <el-tag v-if="scope.row.type == '2'" type="danger" size="default">按钮</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column prop="icon" label="图标">
+                <template #default="scope">
+                    <el-icon>
+                        <!-- 动态组件展示图标 -->
+                        <component v-if="scope.row.icon" :is="scope.row.icon"></component>
+                    </el-icon>
+                </template>
+            </el-table-column>
+            <el-table-column prop="parentName" label="上级菜单"></el-table-column>
+            <el-table-column prop="path" label="路由"></el-table-column>
+            <el-table-column prop="code" label="权限字段"></el-table-column>
+            <el-table-column prop="orderNum" label="序号"></el-table-column>
+            
+            <el-table-column label="操作" width="220" align="center">
+                <template #default="scope">
+                    <el-button type="primary" icon="Edit" size="default" @click="editBtn(scope.row)">编辑</el-button>
+                    <el-button type="danger" icon="Delete" size="default" @click="deleteBtn(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
         <!-- 新增弹框 -->
         <SysDialog :title="dialog.title" :width="dialog.width" :height="dialog.height" :visible="dialog.visible"
             @onClose="onClose" @onConfirm="commit">
@@ -60,7 +92,7 @@
 //引入弹窗组件
 import SysDialog from "@/components/SysDialog.vue";
 import useDialog from "@/hooks/useDialog";
-import {reactive,ref} from "vue"
+import {reactive,ref,onMounted,nextTick} from "vue"
 // 弹框属性
 const {dialog, onClose, onShow } = useDialog();
 
@@ -69,13 +101,25 @@ import { ElMessage,FormInstance } from "element-plus";
 const addRef = ref<FormInstance>();
 
 // 引入api
-import { getParentApi,addApi } from "@/api/menu/index"
+import { getParentApi,addApi,listApi,editApi,deleteApi } from "@/api/menu/index";
+
+import {Menu} from "@/api/menu/MenuModel";
+
+// 新增编辑的标识
+const tags = ref("");
+
+// 引入消息弹窗组件
+import useWarnConfirm from "@/hooks/useWarnConfirm";
+const { global } = useWarnConfirm();
 
 const addBtn = () =>{
+    tags.value = "0";
+    dialog.title='新增'
     dialog.height = 200;
     getParentList();
     // 展示弹框
     onShow();
+    addRef.value?.resetFields();
 }
 
 const addModel = reactive({
@@ -108,10 +152,16 @@ const nodeClick = (e:any) => {
 const commit = () =>{
     addRef.value?.validate(async (valid) => {
         if (valid) {
-            let res = await addApi(addModel);
+            let res = null;
+            if (tags.value == '0') {
+                res = await addApi(addModel);
+            } else {
+                res = await editApi(addModel);
+            }
             console.log(res);
             if(res && res.code == 200){
                 ElMessage.success(res.msg);
+                getList();
                 onClose();
             }
         }
@@ -128,6 +178,50 @@ const rules = reactive({
     path: [{ required: true, message: "请填写菜单path", trigger: "change" }],
     orderNum: [{ required: true, message: "请填写序号", trigger: "change" }],
 });
+
+//表格数据 
+const tableList = ref([])
+// 获取表格数据
+const getList = async () => {
+    let res = await listApi()
+    if (res && res.code == 200) {
+        console.log(res)
+        tableList.value = res.data;
+    }
+}
+// 删除
+const deleteBtn = async (row:Menu)=>{
+    console.log(row)
+    // 消息确定
+    const confirm = await global.$warnConfirm('确定删除该数据吗？');
+    if (confirm) {
+        let res = await deleteApi(row);
+        if (res && res.code == 200) {
+            ElMessage.success(res.msg);
+            getList();
+        }
+    }
+    
+}
+// 编辑
+const editBtn = (row:Menu)=>{
+    tags.value = "1";
+    dialog.title='编辑'
+    //获取上级菜单 
+    getParentList();
+    nextTick(()=>{
+        Object.assign(addModel,row);
+    });
+    // 展示弹框
+    onShow();
+    // 清空表单
+    addRef.value?.resetFields();
+
+}
+
+onMounted(()=>{
+    getList()
+})
 
 </script>
 <style scoped></style>
