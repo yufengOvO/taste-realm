@@ -1,12 +1,6 @@
 import { createApp } from 'vue'
 //import './style.css'
 import App from './App.vue'
-
-// 引入持久化插件
-// import piniaPluginPersistedstate from 'pinia-pl'
-
-
-
 // 导入路由
 import router from './router/index'
 
@@ -14,11 +8,16 @@ import router from './router/index'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import *as ElementPlusIconsVue from '@element-plus/icons-vue'
+// 引入持久化插件
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 // 引入pinia
 import { createPinia } from 'pinia'
 // 实例化 Pinia
 const pinia = createPinia()
+// 使用持久化插件
+pinia.use(piniaPluginPersistedstate)
+
 //国际化-解决分页插件英文转中文
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 //引入警告

@@ -1,5 +1,5 @@
 import http from "@/http";
-import { ListParam, User,LoginParm,UpdateParm, AssignParm } from "./UserModel";
+import { ListParam, User,LoginParm,UpdateParm, AssignParm, SaveAssignParm } from "./UserModel";
 
 // 新增管理员
 export const addAdminUserApi = (parm: User) => {
@@ -33,4 +33,8 @@ export const updatePasswordApi = (parm: UpdateParm) => {
 // 获取树的数据
 export const getAssignTreeApi =(parm:AssignParm)=>{
     return http.get("/api/menu/getAssignTree",parm)
+}
+// 提交分配权限
+export const assignSaveApi = (parm:SaveAssignParm) => {
+    return http.post("/api/menu/assignSave", parm)
 }

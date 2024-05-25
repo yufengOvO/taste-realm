@@ -19,5 +19,9 @@ export const userStore = defineStore('userStore', {
         setUserId(userId: string) {
             this.userId = userId;
         }
+    },
+    // 持久化
+    persist:{
+        storage:localStorage,paths:['userId','nickName']
     }
 })
