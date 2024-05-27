@@ -65,9 +65,9 @@
             <el-table-column label="操作" width="320" align="center">
                 <template #default="scope">
                     <el-button type="success" icon="Setting" size="default"
-                        @click="assignBtn(scope.row)">分配菜单</el-button>
-                    <el-button type="primary" icon="Edit" size="default" @click="editBtn(scope.row)">编辑</el-button>
-                    <el-button type="danger" icon="Delete" size="default" @click="deleteBtn(scope.row)">删除</el-button>
+                        @click="assignBtn(scope.row)" v-permission="['sys:adminUser:role']">分配菜单</el-button>
+                    <el-button type="primary" icon="Edit" size="default" @click="editBtn(scope.row)" v-permission="['sys:adminUser:edit']">编辑</el-button>
+                    <el-button type="danger" icon="Delete" size="default" @click="deleteBtn(scope.row)" v-permission="['sys:adminUser:delete']">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
