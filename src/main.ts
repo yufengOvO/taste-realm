@@ -10,6 +10,7 @@ import 'element-plus/dist/index.css'
 import *as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 引入持久化插件
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import{permission}from './directives/permission'
 
 // 引入pinia
 import { createPinia } from 'pinia'
@@ -29,6 +30,7 @@ app.use(pinia)
     .use(ElementPlus, { locale: zhCn })
     .use(router)
     .mount('#app')
+app.directive('permission',permission)
 //app.use(ElementPlus).use(router).mount('#app')
 //app.use(router).mount('#app')
 //全局注册图标组件

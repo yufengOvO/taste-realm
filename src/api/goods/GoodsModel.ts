@@ -5,3 +5,10 @@ export type GoodsListParm = {
     goodsName: string,
     total?: number
 }
+// 商品状态数据
+export type StatusParm ={
+    goodsId :string,
+    status?:string,
+    setIndex?:string,
+
+}

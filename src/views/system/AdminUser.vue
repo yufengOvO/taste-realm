@@ -8,7 +8,7 @@
             <el-form-item>
                 <el-button icon="Search" @click="searchBtn">搜索</el-button>
                 <el-button icon="Close" type="danger" plain @click="resetBtn">重置</el-button>
-                <el-button type="primary" icon="Plus" @click="addBtn">新增</el-button>
+                <el-button type="primary" icon="Plus" @click="addBtn" v-permission="['sys:adminUser:add']">新增</el-button>
             </el-form-item>
         </el-form>
 
