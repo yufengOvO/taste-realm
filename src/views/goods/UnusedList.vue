@@ -64,8 +64,8 @@
             </el-table-column>
         </el-table>
 
-         <!-- 分页组件 -->
-         <el-pagination @size-change="sizeChange" @current-change="currentChange"
+        <!-- 分页组件 -->
+        <el-pagination @size-change="sizeChange" @current-change="currentChange"
             :current-page.sync="searchParm.currentPage" :page-sizes="[10, 20, 40, 80, 100]"
             :page-size="searchParm.pageSize" layout="total,sizes,prev,pager,next,jumper" :total="searchParm.total"
             background></el-pagination>
@@ -73,7 +73,7 @@
     </el-main>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive, ref,nextTick } from 'vue';
+import { onMounted, reactive, ref, nextTick } from 'vue';
 
 import { getGoodsListApi } from "@/api/goods/index";
 
@@ -107,20 +107,30 @@ const deleteBtn = (goodsId: string) => {
 
 
 // 获取表格数据
+// 异步函数，用于获取商品列表  
 const getGoodsList = async () => {
+    // 调用API并等待结果  
     let res = await getGoodsListApi(searchParm);
+    // 如果请求成功  
     if (res && res.code == 200) {
+        // 打印结果  
         console.log(res);
+        // 更新表格数据  
         tableList.value = res.data.records;
+        // 更新商品总数  
         searchParm.total = res.data.total;
     }
 };
+
+// 组件挂载后执行的逻辑  
 onMounted(() => {
+    // 获取商品列表  
     getGoodsList();
-    nextTick(()=>{
+    // 等待DOM更新后  
+    nextTick(() => {
+        // 设置表格高度  
         tableHeight.value = window.innerHeight - 200;
     });
-    
 });
 
 //表格高度
@@ -128,15 +138,15 @@ const tableHeight = ref(0);
 
 //页容量改变触发
 const sizeChange = (size: number) => {
-    searchParm.pageSize=size
+    searchParm.pageSize = size
     getGoodsList()
-    // console.log(size)
+   
 }
 //页数改变触发
 const currentChange = (page: number) => {
-    searchParm.currentPage=page
+    searchParm.currentPage = page
     getGoodsList()
-    // console.log(page)
+
 }
 
 </script>
