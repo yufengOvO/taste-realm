@@ -3,8 +3,9 @@
         @onClose="onClose" @onConfirm="commit">
         <template v-slot:content>
             <!-- 菜单树 -->
-            <el-tree ref="assignTree" :data="assignTreeData.list" node-key="" :props="defaultProps" empty-text="暂无数据"
-                show-checkbox default-expand-all highlight-current @node-click=""></el-tree>
+            <el-tree ref="assignTree" :data="assignTreeData.list" node-key="menuId" :props="defaultProps" empty-text="暂无数据"
+    show-checkbox default-expand-all highlight-current @node-click=""></el-tree>
+
         </template>
     </SysDialog>
 </template>
@@ -83,21 +84,18 @@ const getAssignTree = async () => {
         }
     }
 };
-const checked =(id:number,data:any,newArr:any)=>{
-    data.forEach((item:any)=>{
-        if(item.menuId == id){
-            if(item.children && item.children.length ==0){
-                newArr.push(item.menuId)
-            }
-            else{
-                if(item.children && item.children.length !=0){
-                    // 递归调用
-                    checked(id,item.children,newArr)
-                }
+
+const checked = (id: number, data: any[], newArr: number[]) => {
+    data.forEach(item => {
+        if (item.menuId === id) {
+            if (item.children && item.children.length === 0) {
+                newArr.push(item.menuId);
+            } else if (item.children && item.children.length !== 0) {
+                checked(id, item.children, newArr);
             }
         }
-    })
-}
+    });
+};
 
 
 
@@ -113,25 +111,26 @@ const commitParm = reactive({
     list: [] as string[]
 })
 
-// 提交
 const commit = async () => {
-    //选择的节点Id
-    let checkedIds = assignTree.value?.getCheckedKeys(false) as string[]
+    // 选择的节点Id
+    let checkedIds = assignTree.value?.getCheckedKeys(false) as string[];
     // 半选节点
-    let halfIds = assignTree.value?.getHalfCheckedKeys() as string[]
+    let halfIds = assignTree.value?.getHalfCheckedKeys() as string[];
     let ids = checkedIds.concat(halfIds) as string[];
-    if (ids.length == 0) {
+    if (ids.length === 0) {
         ElMessage.warning("请选择菜单");
         return;
     }
     // 提交表单
     commitParm.list = ids;
-    let res = await assignSaveApi(commitParm)
-    if (res && res.code == 200) {
-        ElMessage.success(res.msg)
-        onClose()
+    console.log(commitParm.list);
+    // 提交数据到API
+    let res = await assignSaveApi(commitParm);
+    if (res && res.code === 200) {
+        ElMessage.success(res.msg);
+        onClose();
     }
-}
+};
 
 </script>
 
