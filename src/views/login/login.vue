@@ -80,6 +80,9 @@ const commit = () => {
         if (valid) {
             let res = await lgoinApi(loginModel)
             store.setUserId(res.data.userId)
+            // 设置权限菜单
+            store.setMenuList(res.data.menuList)
+            store.setCodeList(res.data.codeList)
             router.push({ path: "/dashboard" })
         }
     })

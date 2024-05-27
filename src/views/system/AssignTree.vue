@@ -22,7 +22,7 @@ import { ElTree, ElMessage } from "element-plus";
 // 配置选项
 const defaultProps = {
     children: 'children',//指定子树为节点对象的某个属性值
-    label: 'label',//指定节点标签为节点对象的某个属性值
+    label: 'title',//指定节点标签为节点对象的某个属性值
 }
 // 共享数据
 const store = userStore()
