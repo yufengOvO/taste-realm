@@ -4,7 +4,10 @@
         <!-- 新增按钮 -->
         <el-button type="primary" icon="Plus" @click="addBtn" size="default" >新增</el-button>
 
-        <!-- 表格 -->
+        <!-- 表格
+        当 row 中包含 children 字段时，被视为树形数据
+        hasChildren字段来指定哪些行是包含子节点
+        -->
         <el-table :tree-props="{children:'children',hasChildren:'hasChildren'}" row-key="menuId" :data="tableList"  border stripe>
             <el-table-column prop="title" label="菜单名称"></el-table-column>
             <el-table-column prop="type" label="菜单类型">
@@ -34,10 +37,18 @@
             </el-table-column>
         </el-table>
 
-        <!-- 新增弹框 -->
+        <!-- 
+            新增弹框
+            visible对话框是否可见 
+            onConfirm确认
+            onClose取消
+        -->
         <SysDialog :title="dialog.title" :width="dialog.width" :height="dialog.height" :visible="dialog.visible"
             @onClose="onClose" @onConfirm="commit">
-            <!-- 弹窗内容--新增表单 -->
+            <!-- 
+                弹窗内容--新增表单
+                inline表单的布局方式
+             -->
             <template v-slot:content>
                 <el-form :model="addModel" ref="addRef" :rules="rules" label-width="80px" :inline="false" size="default">
                     <el-form-item label="菜单类型">
@@ -47,6 +58,10 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-row>
+                        <!-- 
+                            span 属性用于定义该列占据的栅格数
+                            offset 属性则用于定义该列的偏移栅格数
+                         -->
                         <el-col :span="12" :offset="0">
                             <el-form-item label="上级菜单">
                                 <el-tree-select @check="nodeClick" v-model="addModel.parentId"  :props="defaultProps" :data="parentList"
@@ -97,6 +112,7 @@ import {reactive,ref,onMounted,nextTick} from "vue"
 const {dialog, onClose, onShow } = useDialog();
 
 import { ElMessage,FormInstance } from "element-plus";
+
 // 表单ref属性
 const addRef = ref<FormInstance>();
 
