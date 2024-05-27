@@ -82,6 +82,7 @@ const commit = () => {
             store.setUserId(res.data.userId)
             // 设置权限菜单
             store.setMenuList(res.data.menuList)
+            console.log(res.data)
             store.setCodeList(res.data.codeList)
             router.push({ path: "/dashboard" })
         }

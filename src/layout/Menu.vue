@@ -60,36 +60,39 @@ import { reactive, computed } from 'vue';
 // 转换函数
 function transformMenuData(rawData: any[]): any[] {
     const menuList: any[] = [];
-    const tempMap: { [key: number]: any } = {};//临时映射,用于储存已转换菜单项
+    const tempMap: { [key: number]: any } = {}; // 临时映射,用于储存已转换菜单项
 
-    // 第一步:创建临时映射
+    // 第一步: 创建临时映射
     rawData.forEach(item => {
+        const title = item.title || ""; // 确保 title 存在并且是字符串
         tempMap[item.menuId] = {
             path: item.path,
-            component: 'Layout', // 假设所有组件都是Layout
-            name: item.title.tolowerCase().replace(/ /g, ''),// 转换标题为小写并用下划线替换空格
+            component: 'Layout', // 假设所有组件都是 Layout
+            name: title.toLowerCase().replace(/ /g, '_'), // 转换标题为小写并用下划线替换空格
             meta: {
-                title: item.title,
-                icon: item.icon.replace('icon', 'HomeFilled'),// 假设icon前缀需要替换
-                roles: [`sys:${item.title.toLowerCase().replace(/ /g, '')}`],  // 转换角色
+                title: title,
+                icon: item.icon.replace('icon', 'HomeFilled'), // 假设 icon 前缀需要替换
+                roles: [`sys:${title.toLowerCase().replace(/ /g, '_')}`], // 转换角色
             },
-            children: [],// 初始化children数组
+            children: [], // 初始化 children 数组
         };
     });
-    // 第二步:构建嵌套结构
+
+    // 第二步: 构建嵌套结构
     rawData.forEach(item => {
         const menuItem = tempMap[item.menuId];
         const parent = item.parentId ? tempMap[item.parentId] : null;
-        if (parent) { // 如果存在父菜单项,将当前菜单项添加到父菜单项的children数组中
+        if (parent) { // 如果存在父菜单项,将当前菜单项添加到父菜单项的 children 数组中
             parent.children.push(menuItem);
-
         } else {
-            // 如果没有父菜单项(即顶级菜单),将当前菜单项添加到menuList数组中
+            // 如果没有父菜单项(即顶级菜单),将当前菜单项添加到 menuList 数组中
             menuList.push(menuItem);
         }
     });
+
     return menuList;
 }
+
 // 调用转换函数
 
 const transformedMenuList = transformMenuData(rawData.value);
