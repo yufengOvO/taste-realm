@@ -49,7 +49,7 @@
                     <el-row>
                         <el-col :span="12" :offset="0">
                             <el-form-item label="上级菜单">
-                                <el-tree-select @check="nodeClick" v-model="addModel.parentId" :data="parentList"
+                                <el-tree-select @check="nodeClick" v-model="addModel.parentId"  :props="defaultProps" :data="parentList"
                                     :render-after-expand="false" show-checkbox check-strictly/>
                             </el-form-item>
                         </el-col>
@@ -111,6 +111,11 @@ const tags = ref("");
 // 引入消息弹窗组件
 import useWarnConfirm from "@/hooks/useWarnConfirm";
 const { global } = useWarnConfirm();
+
+const defaultProps = {
+    children: 'children',//指定子树为节点对象的某个属性值
+    label: 'title',//指定节点标签为节点对象的某个属性值
+}
 
 const addBtn = () =>{
     tags.value = "0";
