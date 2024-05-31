@@ -6,7 +6,7 @@ import axios, {
 import { ElMessage } from 'element-plus';
 //axios请求配置
 const config = {
-    // baseURL: 'http://localhost:8089',
+    // baseURL: 'http://localhost:8088',
     baseURL: '/api',
     timeout: 10000
 }
@@ -35,7 +35,7 @@ class Http {
             if (token) {
                 config.headers!['token'] = token
                 //把token放到headers里面
-                // (config.headers as AxiosRequestHeaders).token = token
+               
             }
             console.log(config)
             return config;
@@ -136,5 +136,7 @@ class Http {
     delete<T = Result>(url: string): Promise<T> {
         return this.instance.delete(url)
     }
+  
+    
 }
 export default new Http(config)

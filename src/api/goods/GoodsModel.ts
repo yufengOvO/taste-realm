@@ -10,5 +10,4 @@ export type StatusParm ={
     goodsId :string,
     status?:string,
     setIndex?:string,
-
 }

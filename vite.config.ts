@@ -12,7 +12,7 @@ export default defineConfig({
     open: true,//启动浏览器打开
     proxy:{//跨域链接
       '/api':{
-        target:'http://localhost:8089',
+        target:'http://localhost:8088',
         changeOrigin:true,
         rewrite:(path)=> path.replace(/^\/api/,'')
 

@@ -76,7 +76,7 @@ const routes: Array<RouteRecordRaw> = [
         component: Layout,
         name: "goodsRoot",
         meta: {
-            title: "商品管理",
+            title: "菜品管理",
             icon: "Setting",
 
             roles: ["sys:goodsRoot"],
@@ -87,7 +87,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('@/views/goods/GoodsType.vue'),
                 name: "goodsType",
                 meta: {
-                    title: "商品分类",
+                    title: "菜品分类",
                     icon: "UserFilled",
                     roles: ["sys:goodsType"],
                 },
@@ -97,7 +97,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('@/views/goods/UnusedList.vue'),
                 name: "unusedList",
                 meta: {
-                    title: "闲置商品",
+                    title: "审核菜品",
                     icon: "Wallet",
                     roles: ["sys:unusedList"],
                 },
@@ -119,7 +119,7 @@ const routes: Array<RouteRecordRaw> = [
         component: Layout,
         name: "order",
         meta: {
-            title: "订单管理",
+            title: "收藏管理",
             icon: "Setting",
             roles: ["sys:order"],
         },
@@ -129,7 +129,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('@/views/order/UnusedOrder.vue'),
                 name: "unusedOrder",
                 meta: {
-                    title: "闲置订单",
+                    title: "收藏",
                     icon: "UserFilled",
                     roles: ["sys:unusedOrder"],
                 },

@@ -3,7 +3,7 @@
     <MenuLogo></MenuLogo>
     <!-- 菜单组件-->
     <el-menu v-bind:default-active="activeIndex" class="el-menu-vertical-demo" :collapse="isCollapse" unique-opened
-        router @open="handleOpen" @close="handleClose" background-color="#E1FFFF">
+        router @open="handleOpen" @close="handleClose" background-color="#F2E9E1">
         <MenuItem :menuList="menuList">
         </MenuItem>
     </el-menu>
@@ -99,200 +99,48 @@ const transformedMenuList = transformMenuData(rawData.value);
 // 创建reactive数组
 const menuList = reactive(transformedMenuList);
 
-
-
-
-
-
-
-
-//菜单数据:
-// const menuList = reactive([
-//     {
-//         path: "/dashboard",
-//         component: "Layout",
-//         name: "dashboard",
-//         meta: {
-//             title: "首页",
-//             icon: "HomeFilled",
-//             roles: ["sys:dashboard"],
-//         },
-//     },
-//     {
-//         path: "/system",
-//         component: "Layout",
-//         name: "system",
-//         meta: {
-//             title: "系统管理",
-//             icon: "Setting",
-//             roles: ["sys:manage"],
-//         },
-//         children: [
-
-//             {
-//                 path: "/adminUser",
-//                 component: "/system/AdminUser",
-//                 name: "adminUser",
-//                 meta: {
-//                     title: "管理员管理",
-//                     icon: "UserFilled",
-//                     roles: ["sys:adminUser"],
-//                 },
-//             },
-//             {
-//                 path: "/userList",
-//                 component: "/system/UserList",
-//                 name: "userList",
-//                 meta: {
-//                     title: "用户管理",
-//                     icon: "Wallet",
-//                     roles: ["sys:userList"],
-//                 },
-//             },
-//             {
-//                 path: "/menuList",
-//                 component: "/system/MenuList",
-//                 name: "menuList",
-//                 meta: {
-//                     title: "菜单管理",
-//                     icon: "Menu",
-//                     roles: ["sys:menu"],
-//                 },
-//             },
-//         ],
-//     },
-//     {
-//         path: "/goodsRoot",
-//         component: "Layout",
-//         name: "goodsRoot",
-//         meta: {
-//             title: "商品管理",
-//             icon: "Files",
-//             roles: ["sys:goodsRoot"],
-//         },
-//         children: [
-//             {
-//                 path: "/goodsType",
-//                 component: "/goods/GoodsType",
-//                 name: "goodsType",
-//                 meta: {
-//                     title: "商品分类",
-//                     icon: "Grid",
-//                     roles: ["sys:goodsType"],
-//                 },
-//             },
-//             {
-//                 path: "/unusedList",
-//                 component: "/goods/UnusedList",
-//                 name: "unusedList",
-//                 meta: {
-//                     title: "闲置商品",
-
-//                     icon: "Filter",
-//                     roles: ["sys:unusedList"],
-//                 },
-//             },
-//             {
-//                 path: "/buyList",
-//                 component: "/goods/BuyList",
-//                 name: "buyList",
-//                 meta: {
-//                     title: "求购商品",
-//                     icon: "Aim",
-//                     roles: ["sys:buyList"],
-//                 },
-//             },
-//         ],
-//     },
-//     {
-//         path: "/order",
-//         component: "Layout",
-//         name: "order",
-//         meta: {
-//             title: "订单管理",
-//             icon: "DocumentCopy",
-//             roles: ["sys:order"],
-//         },
-//         children: [
-//             {
-//                 path: "/unusedOrder",
-//                 component: "/order/UnusedOrder",
-//                 name: "unusedOrder",
-//                 meta: {
-//                     title: "闲置订单",
-//                     icon: "Tickets",
-//                     roles: ["sys:unusedOrder"],
-//                 },
-//             },
-//             {
-//                 path: "/buyOrder",
-//                 component: "/order/BuyOrder",
-//                 name: "buyOrder",
-//                 meta: {
-//                     title: "求购订单",
-//                     icon: "Document",
-//                     roles: ["sys:buyOrder"],
-//                 },
-//             },
-//         ],
-//     },
-//     {
-//         path: "/comment",
-//         component: "Layout",
-//         name: "comment",
-//         meta: {
-//             title: "评论管理",
-//             icon: "ChatLineSquare",
-//             roles: ["sys:comment"],
-//         },
-//         children: [
-
-//             {
-//                 path: "/commentList",
-//                 component: "/comment/CommentList",
-//                 name: "commentList",
-//                 meta: {
-//                     title: "评论列表",
-//                     icon: "ChatDotSquare",
-//                     roles: ["sys:commentList"],
-//                 },
-//             },
-//         ],
-//     },
-// ]);
-
 </script>
 <style scoped>
-/* 菜单样式 */
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 230px;
-    min-height: 400px;
+/* 菜谱主题配色 - 子菜单标题颜色 */
+:deep(.el-sub-menu .el-sub-menu__title) {
+    color: #91582f !important;
+    /* 假设为深棕色，类似于焦糖或酱油的颜色 */
 }
 
-.el-menu {
-    border-right: none;
+/* 菜谱主题配色 - 菜单项默认颜色 */
+:deep(.el-menu .el-menu-item) {
+    color: #50423c;
+    /* 浅棕色或灰色，作为默认文本颜色 */
 }
 
-:deep(.el-sub-menu.el-sub-menu__title) {
-    color: #409eff !important;
-}
-
-:deep(.el-menu.el-menu-item) {
-    color: #bfcbd9;
-}
-
-/* 菜单点中文字的颜色 */
+/* 菜单点中文字的颜色（当前选中的菜单项） */
 :deep(.el-menu-item.is-active) {
-    color: #409eff !important;
+    color: #e67e22 !important;
+    /* 亮橙色，表示选中或高亮 */
+    font-weight: bold;
+    /* 可选：加粗字体以突出显示 */
 }
 
-/* 当前打开菜单的所有子菜单颜色 */
-:deep(.is-opened.el-menu-item) {
-    background-color: #ccffff !important;
+/* 当前打开菜单的所有子菜单背景颜色 */
+:deep(.is-opened .el-sub-menu) {
+    background-color: #f0e0d6 !important;
+    /* 浅黄色或米色，作为打开子菜单的背景 */
 }
 
-/* 鼠标移动菜单的颜色 */
+/* 当前打开菜单项的背景颜色（与鼠标悬停状态相同） */
+:deep(.is-opened .el-menu-item) {}
+
+/* 鼠标移动到菜单项上的颜色 */
 :deep(.el-menu-item:hover) {
-    background-color: #ccffff !important;
+    background-color: #f0e0d6 !important;
+    /* 与当前打开子菜单相同的背景颜色 */
+    color: #e67e22 !important;
+    /* 也可以设置鼠标悬停时的文本颜色为亮橙色 */
+}
+
+/* 可选：菜单项分隔线颜色（如果需要的话） */
+:deep(.el-menu::before, .el-menu::after) {
+    border-color: #a88734;
+    /* 深一点的棕色作为分隔线颜色 */
 }
 </style>

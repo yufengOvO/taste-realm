@@ -82,7 +82,7 @@ const onConfirm = () => {
         padding: 10px;
     }
 
-    亚平工作室 // 底部
+ // 底部
 
     .el-dialog__footer {
         border-top: 1pxsolid#e8eaec !important;

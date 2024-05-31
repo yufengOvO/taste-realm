@@ -7,7 +7,7 @@
 </template>
 <script setup lang="ts">
 // 导入asset文件夹下的logo图片
-import MenuLogo from '@/assets/login1.jpg'
+import MenuLogo from '@/assets/logo.jpg'
 import { ref, watch } from "vue";
 
 //导入共享数据
@@ -30,23 +30,24 @@ watch(
 )
 
 // logo标题
-const title = ref("转转乐");
+const title = ref("味界探索");
 </script>
 <style scoped>
+/* 主页导航栏 */
 .logo {
     display: flex;
     width: 100%;
     height: 60px;
     line-height: 60px;
-    background: #ccffcc;
+    background:#F2E9E1;
     text-align: center;
     cursor: pointer;
     align-items: center;
 
     /* 图片 */
     img {
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         margin-left: 50px;
         margin-right: 12px;
     }

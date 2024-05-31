@@ -13,25 +13,20 @@
 
         <!-- 表格 -->
         <el-table :height="tableHeight" :data="tableList" border stripe>
-            <el-table-column prop="image" label="商品图片">
+            <el-table-column prop="image" label="菜品图片">
                 <template #default="scope">
                     <el-image v-if="scope.row.image" style="width: 100px; height: 60px;"
                     :src="scope.row.image.split(',')[0]" />
                 </template>
             </el-table-column>
-            <el-table-column prop="goodsName" label="商品名称"></el-table-column>
-            <el-table-column prop="type" label="类型">
-                <template #default="scope">
-                    <el-tag type="danger" v-if="scope.row.type == '0'" size="default" effect="dark">闲置</el-tag>
-                    <el-tag type="success" v-if="scope.row.type == '1'" size="default" effect="dark">求购</el-tag>
-                </template>
-            </el-table-column>
-            <el-table-column prop="goodsPrice" label="商品价格"></el-table-column>
-            <el-table-column prop="goodsDesc" label="商品描述"></el-table-column>
+            <el-table-column prop="goodsName" label="菜品名称"></el-table-column>
+            <el-table-column prop="categoryName"   label="分类"> </el-table-column>
+       
+            <el-table-column prop="goodsDesc" label="菜品描述"></el-table-column>
+            <el-table-column prop="goodsmake" label="菜品制作"></el-table-column>
+            <el-table-column prop="makeimage" label="制作图片"></el-table-column>
             <el-table-column prop="userName" label="发布人"></el-table-column>
-            <el-table-column prop="phone" label="发布人电话"></el-table-column>
-            <el-table-column prop="wxNum" label="发布人微信"></el-table-column>
-            <el-table-column prop="address" label="商品地址"></el-table-column>
+        
             <el-table-column prop="status" label="上下架状态">
                 <template #default="scope">
                     <el-switch v-model="scope.row.status" :active-value="'0'" :inactive-value="'1'" :before-change="beforeStatus" @change="changeStatus(scope.row.status, scope.row.goodsId)" />
@@ -42,12 +37,7 @@
                         <el-switch v-model="scope.row.setIndex" :active-value="'1'" :inactive-value="'0'" :before-change="beforeSetIndex" @change="changeSetIndex(scope.row.setIndex, scope.row.goodsId)" />
                     </template>
                 </el-table-column>
-                <el-table-column prop="sellStatus" label="出售状态">
-                    <template #default="scope">
-                        <el-tag type="danger" v-if="scope.row.sellStatus == '0'" size="default" effect="dark">未出售</el-tag>
-                        <el-tag type="success" v-if="scope.row.sellStatus == '1'" size="default" effect="dark">已出售</el-tag>
-                    </template>
-                </el-table-column>
+             
                 <el-table-column label="操作">
                     <template #default="scope">
                         <el-button type="danger" icon="Delete" size="default"

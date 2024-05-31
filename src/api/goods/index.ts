@@ -11,7 +11,7 @@ export const upanddownApi = (parm:StatusParm)=>{
 }
 // 推荐首页
 export const setIndexApi = (parm:StatusParm)=>{
-    return http.post("/api/goodstIndex",parm)
+    return http.post("/api/goods/setIndex",parm)
 }
 // 删除
 export const deleteApi = (parm:StatusParm)=>{

@@ -4,7 +4,7 @@
             <img style="width: 40px; height:40px;" src="../../assets/logo.jpg">
             <el-form-item>
                 <div class="logintitle">
-                    转转乐后台系统
+                    味界探索
                 </div>
             </el-form-item>
             <el-form-item prop="username">
@@ -30,7 +30,7 @@
                         <el-button style="width: 100%;" type="primary" size="large" @click="commit">登录</el-button>
                     </el-col>
                     <el-col style="padding-right: 0; padding-left:10px" :span="12" :offset="0">
-                        <el-button style="width: 100%;" type="primary" size="large" @click="">重置</el-button>
+                        <el-button style="width: 100%;" type="primary" size="large" @click="resetBtn">重置</el-button>
                     </el-col>
                 </el-row>
             </el-form-item>
@@ -91,12 +91,25 @@ const commit = () => {
 onMounted(() => {
     getImg()
 })
+
+
+const resetBtn =()=>{
+    loginModel.password='',
+    loginModel.code='',
+    loginModel.username=''
+}
+
 </script>
 <style lang="scss" scoped>
 .logincontainer {
-    height: 100%;
+    height: 100vh;
+    /* 使用视口高度 */
     background-color: #fff;
-    background-image: url("../../assets/login.jpg");
+    background-image: url("../../assets/loginb.jpg");
+    background-size: cover;
+    /* 覆盖整个容器 */
+    background-position: center;
+    /* 图片居中 */
     display: flex;
     justify-content: center;
     align-items: center;

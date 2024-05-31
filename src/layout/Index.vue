@@ -23,6 +23,7 @@
     </el-container>
 </template>
 
+
 <script setup lang="ts">
 // 引入退出登录
 import Logout from "./Logout.vue";
@@ -37,15 +38,11 @@ import BreadCrumb from './BreadCrumb.vue';
 
 
 <style scoped lang="scss">
+// 导航栏右侧
 .mycontainer {
     height: 100%;
-
-    // .aside {
-    //     //background-color: rgb(34, 34, 34);
-    // }
-
     .header {
-        background-color: #ccffcc;
+        background-color: #F2E9E1;
         display: flex;
         align-items: center;
         color: #0c0c0c;
@@ -59,7 +56,7 @@ import BreadCrumb from './BreadCrumb.vue';
     }
 
     .mymain {
-        //background-color: seagreen;
+      
         padding: 0;
     }
 
