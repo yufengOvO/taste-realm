@@ -1,64 +1,51 @@
 <template>
-    <!-- logo图片 -->
-    <div class="logo">
-        <img :src="MenuLogo" alt="logo" style="border-radius: 50%;" />
-        <span v-show="show" class="logo-title">{{ title }}</span>
+    <div class="logo-section" :class="{ 'collapsed': isCollapse }">
+        <transition name="fade">
+            <span v-show="!isCollapse" class="logo-title">{{ title }}</span>
+        </transition>
     </div>
 </template>
+
 <script setup lang="ts">
-// 导入asset文件夹下的logo图片
-import MenuLogo from '@/assets/logo.jpg'
-import { ref, watch } from "vue";
-
-//导入共享数据
+import { ref, computed } from "vue";
 import { collapseStore } from '@/store/collapse/index';
-const store = collapseStore()
-//默认显示标题
-const show = ref(true)
-//监听共享数据的值发生改变，让show的值发生改变
-watch(
-    () => store.getCollapse,
-    (collapsed: boolean) => {
-        if (!collapsed) {
-            setTimeout(() => {
-                show.value = !collapsed;
-            }, 300)
-        } else {
-            show.value = !collapsed
-        }
-    }
-)
 
-// logo标题
+const store = collapseStore()
+const isCollapse = computed(() => store.getCollapse)
 const title = ref("味界探索");
 </script>
+
 <style scoped>
-/* 主页导航栏 */
-.logo {
+.logo-section {
+    height: 64px;
     display: flex;
-    width: 100%;
-    height: 60px;
-    line-height: 60px;
-    background:#F2E9E1;
-    text-align: center;
-    cursor: pointer;
     align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    background: linear-gradient(135deg, #e67e22, #f39c12);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
 
-    /* 图片 */
-    img {
-        width: 50px;
-        height: 50px;
-        margin-left: 50px;
-        margin-right: 12px;
-    }
+.logo-section.collapsed {
+    padding: 0;
+}
 
-    /* 文字 */
-    .loge-title {
-        color: #FFF;
-        font-weight: 800;
-        line-height: 60px;
-        font-size: 22px;
-        font-family: FangSong;
-    }
+.logo-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>

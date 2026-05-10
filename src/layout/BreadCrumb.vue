@@ -1,60 +1,93 @@
 <template>
-  <!-- 面包屑导航 -->
-  <el-breadcrumb class="bread" separator="/">
-    <!-- 读取面包屑标题 -->
-    <el-breadcrumb-item v-for="item in tabs">{{ item.meta.title }}</el-breadcrumb-item>
-  </el-breadcrumb>
+    <el-breadcrumb class="breadcrumb" separator="/">
+        <transition-group name="breadcrumb">
+            <el-breadcrumb-item 
+                v-for="(item, index) in tabs" 
+                :key="item.path"
+                :to="index === 0 ? { path: item.path } : null"
+            >
+                <span class="breadcrumb-item" :class="{ 'is-active': index === tabs.length - 1 }">
+                    {{ item.meta.title }}
+                </span>
+            </el-breadcrumb-item>
+        </transition-group>
+    </el-breadcrumb>
 </template>
-  
+
 <script setup lang="ts">
-// 引入所需函数
 import { onMounted, ref, Ref, watch } from "vue";
-// 引入路由
 import { useRoute, RouteLocationMatched } from "vue-router";
-//获取当前路由
+
 const route = useRoute();
-//定义面包屑导航数据
 const tabs: Ref<RouteLocationMatched[]> = ref([]);
-//监听当前路由
+
 watch(
-  () => route.path,
-  () => getBredcrumb()
+    () => route.path,
+    () => getBredcrumb()
 );
-//获取面包屑导航数据
+
 const getBredcrumb = () => {
-  //找出有title的数据--取出所有标题，有可能是多级的
-  let mached = route.matched.filter((item) => item.meta && item.meta.title);
-  // console.log(mached)
-  const first = mached[0]
-  // console.log(first)
-  // 若点击的不是首页，则在第一级面包屑补上首页
-  if (first.path !== '/dashboard') {
-    mached = [{ path: '/dashboard', meta: { title: '首页' } } as any].concat(mached)
-  }
-  // 把读出来的面包屑标题赋值给tabs
-  tabs.value = mached
+    let mached = route.matched.filter((item) => item.meta && item.meta.title);
+    const first = mached[0]
+    if (first.path !== '/dashboard') {
+        mached = [{ path: '/dashboard', meta: { title: '首页' } } as any].concat(mached)
+    }
+    tabs.value = mached
 };
 
-// 调用面包屑方法--22行
 onMounted(() => {
-  getBredcrumb()
+    getBredcrumb()
 })
-
 </script>
-  
+
 <style scoped lang="scss">
-//修改字体颜色
+.breadcrumb {
+    display: flex;
+    align-items: center;
+}
+
 :deep(.el-breadcrumb__inner) {
-  color: #060606 !important;
+    color: #909399 !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    transition: color 0.3s ease !important;
 }
 
-.bread {
-  margin-left: 20px;
+:deep(.el-breadcrumb__inner:hover) {
+    color: #e67e22 !important;
 }
 
-// 修改字体大小
-:deep(.el-breadcrumb__item) {
-  font-size: 15px !important;
+:deep(.el-breadcrumb__item:last-child .el-breadcrumb__inner) {
+    color: #303133 !important;
+    font-weight: 600 !important;
+}
+
+:deep(.el-breadcrumb__separator) {
+    color: #c0c4cc !important;
+    margin: 0 8px !important;
+}
+
+.breadcrumb-item {
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-item.is-active {
+    color: #303133;
+}
+
+/* 面包屑动画 */
+.breadcrumb-enter-active,
+.breadcrumb-leave-active {
+    transition: all 0.3s ease;
+}
+
+.breadcrumb-enter-from,
+.breadcrumb-leave-to {
+    opacity: 0;
+    transform: translateX(10px);
+}
+
+.breadcrumb-move {
+    transition: all 0.3s ease;
 }
 </style>
-  

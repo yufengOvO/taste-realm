@@ -6,7 +6,7 @@ import axios, {
 import { ElMessage } from 'element-plus';
 //axios请求配置
 const config = {
-    // baseURL: 'http://localhost:8088',
+    // baseURL: 'http://localhost:8089',
     baseURL: '/api',
     timeout: 10000
 }

@@ -134,4 +134,35 @@ const commit = async () => {
 
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+/* 树样式 */
+:deep(.el-tree) {
+    background: transparent;
+    
+    .el-tree-node__content {
+        height: 40px;
+        border-radius: 8px;
+        margin: 2px 0;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background: rgba(230, 126, 34, 0.08);
+        }
+    }
+    
+    .el-tree-node.is-current > .el-tree-node__content {
+        background: rgba(230, 126, 34, 0.12);
+        color: #e67e22;
+    }
+    
+    .el-checkbox__input.is-checked .el-checkbox__inner {
+        background-color: #e67e22;
+        border-color: #e67e22;
+    }
+    
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+        background-color: #e67e22;
+        border-color: #e67e22;
+    }
+}
+</style>

@@ -1,24 +1,127 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>味界探索</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="description" content="味界探索 - 智能菜谱管理平台" />
+        <meta name="keywords" content="菜谱管理,食材分类,菜品管理" />
+        <meta name="theme-color" content="#e67e22" />
+        <link rel="icon" type="image/jpeg" href="/src/assets/logo.jpg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <title>味界探索 - 菜谱管理平台</title>
+        <style>
+            /* 首屏加载动画 */
+            #app {
+                opacity: 0;
+                animation: fadeIn 0.5s ease-out forwards;
+            }
+            
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+            
+            /* 加载占位 */
+            .app-loading {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background: #ffffff;
+                z-index: 9999;
+            }
+            
+            .app-loading .spinner {
+                width: 50px;
+                height: 50px;
+                border: 3px solid rgba(230, 126, 34, 0.2);
+                border-top-color: #e67e22;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+            
+            .app-loading p {
+                margin-top: 20px;
+                color: #909399;
+                font-family: 'Inter', sans-serif;
+                font-size: 16px;
+            }
+            
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- 首屏加载占位 -->
+        <div class="app-loading" id="app-loading">
+            <div class="spinner"></div>
+            <p>加载中...</p>
+        </div>
+        
+        <div id="app"></div>
+        
+        <script type="module" src="/src/main.ts"></script>
+        
+        <script>
+            // 移除加载占位
+            window.addEventListener('load', function() {
+                var loading = document.getElementById('app-loading');
+                if (loading) {
+                    loading.style.transition = 'opacity 0.3s ease';
+                    loading.style.opacity = '0';
+                    setTimeout(function() {
+                        loading.remove();
+                    }, 300);
+                }
+            });
+        </script>
+    </body>
 </html>
+
 <style>
     html,
-  body,
-  #app {
-    padding: 0px;
-    margin: 0px;
-    height: 100%;
-    box-sizing: border-box;
-  }
-
+    body,
+    #app {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* 全局滚动条 */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #dcdfe6;
+        border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #c0c4cc;
+    }
 </style>

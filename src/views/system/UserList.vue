@@ -13,7 +13,6 @@
 
         <!-- 表格 -->
         <el-table :height="tableHeight" :data="tableList" border stripe>
-            <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="nickName" label="昵称"></el-table-column>
             <el-table-column prop="phone" label="电话"></el-table-column>
             <el-table-column prop="username" label="账户"></el-table-column>
@@ -163,4 +162,157 @@ const currentChange = (page: number) => {
 
 
 </script>
-<style scoped></style>
+<style scoped lang="scss">
+/* 搜索栏样式 */
+:deep(.el-form--inline) {
+    background: #ffffff;
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    
+    .el-form-item {
+        margin-bottom: 0;
+        margin-right: 16px;
+    }
+    
+    .el-input__wrapper {
+        border-radius: 8px;
+    }
+    
+    .el-button {
+        border-radius: 8px;
+        padding: 10px 20px;
+        
+        &--primary {
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+            border: none;
+            box-shadow: 0 2px 8px rgba(230, 126, 34, 0.3);
+            
+            &:hover {
+                opacity: 0.9;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(230, 126, 34, 0.4);
+            }
+        }
+        
+        &--danger {
+            &.is-plain {
+                background: #fef0f0;
+                border-color: #fbc4c4;
+                color: #f56c6c;
+                
+                &:hover {
+                    background: #f56c6c;
+                    border-color: #f56c6c;
+                    color: #fff;
+                }
+            }
+        }
+        
+        &--success {
+            background: linear-gradient(135deg, #67c23a, #85ce61);
+            border: none;
+            
+            &:hover {
+                opacity: 0.9;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(103, 194, 58, 0.3);
+            }
+        }
+    }
+}
+
+/* 表格样式 */
+:deep(.el-table) {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    
+    th.el-table__cell {
+        background-color: #fafafa !important;
+        color: #303133 !important;
+        font-weight: 600 !important;
+        font-size: 14px;
+        border-bottom: 2px solid #ebeef5;
+    }
+    
+    td.el-table__cell {
+        border-bottom: 1px solid #ebeef5;
+        color: #606266;
+    }
+    
+    .el-table__row {
+        transition: background-color 0.3s ease;
+        
+        &:hover {
+            background-color: #fff8f0 !important;
+        }
+    }
+    
+    .el-switch {
+        .el-switch__core {
+            border-radius: 12px;
+        }
+        
+        &.is-checked .el-switch__core {
+            background-color: #e67e22;
+            border-color: #e67e22;
+        }
+    }
+    
+    .el-button {
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 13px;
+        
+        &--danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border: none;
+            
+            &:hover {
+                opacity: 0.9;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+            }
+        }
+        
+        &--success {
+            background: linear-gradient(135deg, #67c23a, #85ce61);
+            border: none;
+            
+            &:hover {
+                opacity: 0.9;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(103, 194, 58, 0.3);
+            }
+        }
+    }
+}
+
+/* 分页样式 */
+:deep(.el-pagination) {
+    margin-top: 24px;
+    padding: 16px 0;
+    justify-content: flex-end;
+    
+    .el-pagination__total {
+        font-weight: 500;
+    }
+    
+    .el-pager li {
+        border-radius: 6px;
+        margin: 0 2px;
+        
+        &.is-active {
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+        }
+    }
+    
+    .el-pagination__sizes {
+        .el-input__wrapper {
+            border-radius: 6px;
+        }
+    }
+}
+</style>

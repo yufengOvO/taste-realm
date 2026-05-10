@@ -1,91 +1,76 @@
 <template>
-    <!-- 使用菜单logo组件 -->
-    <MenuLogo></MenuLogo>
-    <!-- 菜单组件-->
-    <el-menu v-bind:default-active="activeIndex" class="el-menu-vertical-demo" :collapse="isCollapse" unique-opened
-        router @open="handleOpen" @close="handleClose" background-color="#F2E9E1">
-        <MenuItem :menuList="menuList">
-        </MenuItem>
-    </el-menu>
+    <div class="menu-container">
+        <!-- Logo区域 -->
+        <div class="logo-section" :class="{ 'collapsed': isCollapse }">
+            <transition name="fade">
+                <span v-show="!isCollapse" class="logo-title">{{ title }}</span>
+            </transition>
+        </div>
+        
+        <!-- 菜单 -->
+        <el-menu 
+            :default-active="activeIndex" 
+            class="el-menu-vertical" 
+            :collapse="isCollapse"
+            unique-opened
+            router 
+            :collapse-transition="false"
+            background-color="transparent"
+            text-color="#606266"
+            active-text-color="#e67e22"
+        >
+            <MenuItem :menuList="menuList" />
+        </el-menu>
+    </div>
 </template>
 
 <script setup lang="ts">
-
 import MenuItem from './MenuItem.vue';
-//导入ref和reactive函数
-//import { ref, reactive, computed } from 'vue'
-
-
-// 导入菜单logo组件MenuLogo
-import MenuLogo from './MenuLogo.vue'
-
-
+import { ref, watch, computed, reactive } from "vue";
 import { useRoute } from 'vue-router';
-
-//引入共享数据
 import { collapseStore } from '@/store/collapse/index';
-const collStore = collapseStore()
-const isCollapse = computed(() => {
-    return collStore.getCollapse
-})
-const route = useRoute();
-//获取激活的菜单
-const activeIndex = computed(() => {
-    const { path } = route;
-    return path;
-})
-
-
-
-
-// 不能折叠整个菜单
-//const isCollapse = ref(false)
-// 需要展开和收起的菜单的方法
-const handleOpen = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-}
-
 import { userStore } from '@/store/user';
-const ustore = userStore()
 
-// 获取菜单数据--原始数据
+const collStore = collapseStore()
+const ustore = userStore()
+const route = useRoute();
+
+const isCollapse = computed(() => collStore.getCollapse)
+const title = ref("味界探索");
+
+const activeIndex = computed(() => {
+    return route.path;
+})
+
 const rawData = computed(() => {
     return ustore.getMenuList
 })
-import { reactive, computed } from 'vue';
 
-// 转换函数
 function transformMenuData(rawData: any[]): any[] {
     const menuList: any[] = [];
-    const tempMap: { [key: number]: any } = {}; // 临时映射,用于储存已转换菜单项
+    const tempMap: { [key: number]: any } = {};
 
-    // 第一步: 创建临时映射
     rawData.forEach(item => {
-        const title = item.title || ""; // 确保 title 存在并且是字符串
+        const title = item.title || "";
         tempMap[item.menuId] = {
             path: item.path,
-            component: 'Layout', // 假设所有组件都是 Layout
-            name: title.toLowerCase().replace(/ /g, '_'), // 转换标题为小写并用下划线替换空格
+            component: 'Layout',
+            name: title.toLowerCase().replace(/ /g, '_'),
             meta: {
                 title: title,
-                icon: item.icon.replace('icon', 'HomeFilled'), // 假设 icon 前缀需要替换
-                roles: [`sys:${title.toLowerCase().replace(/ /g, '_')}`], // 转换角色
+                icon: item.icon.replace('icon', 'HomeFilled'),
+                roles: [`sys:${title.toLowerCase().replace(/ /g, '_')}`],
             },
-            children: [], // 初始化 children 数组
+            children: [],
         };
     });
 
-    // 第二步: 构建嵌套结构
     rawData.forEach(item => {
         const menuItem = tempMap[item.menuId];
         const parent = item.parentId ? tempMap[item.parentId] : null;
-        if (parent) { // 如果存在父菜单项,将当前菜单项添加到父菜单项的 children 数组中
+        if (parent) {
             parent.children.push(menuItem);
         } else {
-            // 如果没有父菜单项(即顶级菜单),将当前菜单项添加到 menuList 数组中
             menuList.push(menuItem);
         }
     });
@@ -93,54 +78,160 @@ function transformMenuData(rawData: any[]): any[] {
     return menuList;
 }
 
-// 调用转换函数
-
 const transformedMenuList = transformMenuData(rawData.value);
-// 创建reactive数组
 const menuList = reactive(transformedMenuList);
-
 </script>
-<style scoped>
-/* 菜谱主题配色 - 子菜单标题颜色 */
-:deep(.el-sub-menu .el-sub-menu__title) {
-    color: #91582f !important;
-    /* 假设为深棕色，类似于焦糖或酱油的颜色 */
+
+<style scoped lang="scss">
+.menu-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-/* 菜谱主题配色 - 菜单项默认颜色 */
-:deep(.el-menu .el-menu-item) {
-    color: #50423c;
-    /* 浅棕色或灰色，作为默认文本颜色 */
+.logo-section {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    background: linear-gradient(135deg, #e67e22, #f39c12);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    
+    &.collapsed {
+        padding: 0;
+    }
 }
 
-/* 菜单点中文字的颜色（当前选中的菜单项） */
+.logo-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.el-menu-vertical {
+    flex: 1;
+    border-right: none;
+    padding: 12px 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+    &:not(.el-menu--collapse) {
+        width: 100%;
+    }
+}
+
+/* 菜单项样式 */
+:deep(.el-menu-item),
+:deep(.el-sub-menu__title) {
+    height: 48px;
+    line-height: 48px;
+    margin-bottom: 4px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        background: rgba(230, 126, 34, 0.08) !important;
+    }
+}
+
 :deep(.el-menu-item.is-active) {
+    background: linear-gradient(135deg, rgba(230, 126, 34, 0.12), rgba(243, 156, 18, 0.08)) !important;
     color: #e67e22 !important;
-    /* 亮橙色，表示选中或高亮 */
-    font-weight: bold;
-    /* 可选：加粗字体以突出显示 */
+    font-weight: 600;
+    position: relative;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 24px;
+        background: linear-gradient(180deg, #e67e22, #f39c12);
+        border-radius: 0 3px 3px 0;
+    }
 }
 
-/* 当前打开菜单的所有子菜单背景颜色 */
-:deep(.is-opened .el-sub-menu) {
-    background-color: #f0e0d6 !important;
-    /* 浅黄色或米色，作为打开子菜单的背景 */
+:deep(.el-sub-menu) {
+    margin-bottom: 4px;
 }
 
-/* 当前打开菜单项的背景颜色（与鼠标悬停状态相同） */
-:deep(.is-opened .el-menu-item) {}
-
-/* 鼠标移动到菜单项上的颜色 */
-:deep(.el-menu-item:hover) {
-    background-color: #f0e0d6 !important;
-    /* 与当前打开子菜单相同的背景颜色 */
-    color: #e67e22 !important;
-    /* 也可以设置鼠标悬停时的文本颜色为亮橙色 */
+:deep(.el-sub-menu .el-sub-menu__title) {
+    border-radius: 10px;
 }
 
-/* 可选：菜单项分隔线颜色（如果需要的话） */
-:deep(.el-menu::before, .el-menu::after) {
-    border-color: #a88734;
-    /* 深一点的棕色作为分隔线颜色 */
+:deep(.el-sub-menu .el-menu) {
+    background: transparent !important;
+    padding: 4px 0;
+}
+
+:deep(.el-sub-menu .el-menu .el-menu-item) {
+    padding-left: 52px !important;
+    height: 44px;
+    line-height: 44px;
+    font-size: 13px;
+}
+
+/* 折叠状态下的样式 */
+:deep(.el-menu--collapse) {
+    .el-menu-item,
+    .el-sub-menu__title {
+        padding: 0 !important;
+        display: flex;
+        justify-content: center;
+        
+        .el-sub-menu__icon-arrow {
+            display: none;
+        }
+    }
+    
+    .el-sub-menu__title {
+        .el-icon {
+            margin: 0;
+        }
+    }
+}
+
+/* 图标样式 */
+:deep(.el-menu-item .el-icon),
+:deep(.el-sub-menu__title .el-icon) {
+    font-size: 18px;
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+}
+
+/* 滚动条样式 */
+.el-menu-vertical::-webkit-scrollbar {
+    width: 4px;
+}
+
+.el-menu-vertical::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.el-menu-vertical::-webkit-scrollbar-thumb {
+    background: #dcdfe6;
+    border-radius: 2px;
+}
+
+.el-menu-vertical::-webkit-scrollbar-thumb:hover {
+    background: #c0c4cc;
+}
+
+/* 过渡动画 */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>

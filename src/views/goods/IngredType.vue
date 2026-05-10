@@ -3,7 +3,7 @@
         <!-- 搜索栏 -->
         <el-form :model="searchParm" :inline="true" size="default">
             <el-form-item>
-                <el-input v-model="searchParm.categoryName" placeholder="请输入分类名称" />
+                <el-input v-model="searchParm.ingredName" placeholder="请输入食材名称" />
             </el-form-item>
             <el-form-item>
                 <el-button icon="Search" @click="searchBtn">搜索</el-button>
@@ -18,33 +18,20 @@
             <!-- 弹窗内容--新增表单 -->
             <template v-slot:content>
                 <el-form :model="addModel" ref="addForm" :rules="rules" label-width="100px" size="default">
-                    <el-form-item prop="categoryName" label="分类名称:">
-                        <el-input v-model="addModel.categoryName"></el-input>
+                    <el-form-item prop="ingredName" label="分类名称:">
+                        <el-input v-model="addModel.ingredName"></el-input>
                     </el-form-item>
-                    <el-form-item prop="orderNum" label="分类序号:">
-                        <el-input type="number" v-model="addModel.orderNum"></el-input>
+                    <el-form-item prop="ingredNum" label="分类序号:">
+                        <el-input type="number" v-model="addModel.ingredNum"></el-input>
                     </el-form-item>
-                    <el-upload  class="upload-demo" drag action="/api/api/upload/uploadImage" multiple :limit="1"
-                        @success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <i class="el-icon-upload"></i>
-                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传(只能上传一张哦)</em></div>
-                        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件</div>
-
-                    </el-upload>
                 </el-form>
             </template>
         </SysDialog>
 
         <!-- 表格 -->
         <el-table :data="tableList" :height="tableHeight" border stripe>
-            <el-table-column prop="categoryImg" label="图片">
-                <template #default="scope">
-                    <el-image v-if="scope.row.categoryImg" style="width: 100px; height: 60px;"
-                        :src="scope.row.categoryImg.split(',')[0]" />
-                </template>
-            </el-table-column>
-            <el-table-column prop="categoryName" label="分类名称"></el-table-column>
-            <el-table-column prop="orderNum" label="分类序号"></el-table-column>
+            <el-table-column prop="ingredName" label="分类名称"></el-table-column>
+            <el-table-column prop="ingredNum" label="分类序号"></el-table-column>
             <el-table-column label="操作" width="220" align="center">
                 <template #default="scope">
                     <el-button type="primary" icon="Plus" size="default" @click="editBtn(scope.row)">编辑</el-button>
@@ -67,7 +54,7 @@
 import { nextTick, onMounted, ref, reactive } from "vue";
 
 // 引入分类数据
-import { Category } from '@/api/category/CategoryModel'
+import { IngredCategory } from '@/api/category/CategoryModel'
 
 // 引入弹窗表格
 import useDialog from "@/hooks/useDialog";
@@ -75,7 +62,7 @@ import SysDialog from "@/components/SysDialog.vue";
 import { ElMessage, FormInstance } from "element-plus";
 
 // 导入接口api
-import { addCategoryApi, editCategoryApi, listApi, deleteCategoryApi } from '@/api/category/index'
+import { addIngredCategoryApi, editIngredCategoryApi, listIngredApi, deleteIngredCategoryApi } from '@/api/category/index'
 
 // 引入枚举
 import { Title } from "@/type/BaseEnum";
@@ -95,7 +82,7 @@ const addForm = ref<FormInstance>();
 const searchParm = reactive({
     currentPage: 1,
     pageSize: 10,
-    categoryName: "",
+    ingredName: "",
     total: 0
 });
 
@@ -112,36 +99,9 @@ const tags = ref('')
 const addBtn = () => {
     tags.value = '0'
     dialog.title = Title.ADD//将弹窗变成新增
-    dialog.height = 240;
+    dialog.height = 120;
     // 弹框显示
     onShow();
-};
-
-//提取传入后端返回对的图片地址加上前缀
-const handleAvatarSuccess = (response: any, file: any, fileList: any) => {
-    console.log(response, file, fileList);
-    const dataUrl = response.data; // 提取 data 属性的值  
-    console.log(dataUrl); // 在控制台上打印 data 的值  
-    addModel.categoryImg = "http://localhost:8088" + dataUrl
-    return dataUrl; // 返回 data 的值（如果需要的话）  
-
-};
-
-
-// 为 beforeAvatarUpload 函数的参数添加类型  
-const beforeAvatarUpload = (file: File) => {
-    const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'; // 允许 PNG 格式  
-    const isLt500k = file.size < 20 * 1024 * 1024; // 500kb  
-
-    if (!isJPG) {
-        ElMessage.error('上传头像图片只能是 JPG 或 PNG 格式!');
-        return false;
-    }
-    if (!isLt500k) {
-        ElMessage.error('上传头像图片大小不能超过 20M!');
-        return false;
-    }
-    return true;
 };
 
 // 提交表单
@@ -152,9 +112,9 @@ const commit = () => {
             // 提交数据
             let res = null;
             if (tags.value == '0') {
-                res = await addCategoryApi(addModel);
+                res = await addIngredCategoryApi(addModel);
             } else {
-                res = await editCategoryApi(addModel);
+                res = await editIngredCategoryApi(addModel);
             }
             if (res && res.code == 200) {
                 //信息提示
@@ -163,6 +123,8 @@ const commit = () => {
                 getList()
                 // 关闭弹窗
                 onClose()
+                addModel.ingredName="",
+                addModel.ingredNum=""
             }
         }
     })
@@ -170,25 +132,24 @@ const commit = () => {
 
 //表单绑定的数据对象
 const addModel = reactive({
-    categoryId: "",
-    categoryName: "",
-    orderNum: "",
-    categoryImg:""
+    ingredId: "",
+    ingredName: "",
+    ingredNum: ""
 });
 
 // 表单验证规则
 const rules = reactive({
-    categoryName: [
-        { required: true, message: "请填写分类名称", trigger: "blur" },
+    ingredName: [
+        { required: true, message: "请填写材料分类名称", trigger: "blur" },
     ],
-    orderNum: [
+    ingredNum: [
         { required: true, message: "请填写分类序号", trigger: "blur" },
     ],
 });
 
 // 获取表格数据，查看读取数据
 const getList = async () => {
-    let res = await listApi(searchParm)
+    let res = await listIngredApi(searchParm)
     if (res && res.code == 200) {
         console.log(res)
         // 设置表格数据
@@ -218,17 +179,17 @@ const currentChange = (page: number) => {
 
 // 搜索
 const searchBtn = () => {
-    // 后端会自动根据是否传入categoryname分辨出是模糊查询，还是查询所有数据
+    // 后端会自动根据是否传入ingredName分辨出是模糊查询，还是查询所有数据
     getList()
 }
 // 重置
 const resetBtn = () => {
-    searchParm.categoryName = ''//清空搜索框
+    searchParm.ingredName = ''//清空搜索框
     getList()//重新读取数据
 }
 
 //编辑
-const editBtn = (row: Category) => {
+const editBtn = (row: IngredCategory) => {
     tags.value = '1'
     dialog.title = Title.EDIT//将弹窗变成编辑
     dialog.height = 150;
@@ -241,11 +202,11 @@ const editBtn = (row: Category) => {
 }
 
 // 删除
-const deleteBtn = async (row: Category) => {
+const deleteBtn = async (row: IngredCategory) => {
     //确定信息
     let confirm = await global.$warningConfirm('确定删除该数据吗？')
     if (confirm) {
-        let res = await deleteCategoryApi(row)
+        let res = await deleteIngredCategoryApi(row)
         if (res && res.code == 200) {
             ElMessage.success(res.msg)
             //刷新列表
@@ -333,11 +294,6 @@ const deleteBtn = async (row: Category) => {
         }
     }
     
-    .el-image {
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-    
     .el-button {
         border-radius: 6px;
         padding: 6px 12px;
@@ -393,17 +349,15 @@ const deleteBtn = async (row: Category) => {
     }
 }
 
-/* 上传组件样式 */
-:deep(.el-upload) {
-    .el-upload-dragger {
-        border-radius: 12px;
-        border: 2px dashed #dcdfe6;
-        transition: all 0.3s ease;
-        
-        &:hover {
-            border-color: #e67e22;
-            background: #fff8f0;
-        }
+/* 表单样式 */
+:deep(.el-form) {
+    .el-form-item__label {
+        font-weight: 500;
+        color: #303133;
+    }
+    
+    .el-input__wrapper {
+        border-radius: 8px;
     }
 }
 </style>

@@ -1,7 +1,7 @@
 import http from "@/http";
 import { GoodsListParm,StatusParm } from "./GoodsModel";
 
-//查询商品列表api
+//查询菜品列表api
 export const getGoodsListApi = (parm: GoodsListParm ) => {
     return http.get("/api/goods/list", parm)
 }
