@@ -33,16 +33,16 @@
 
 ## 技术栈
 
-| 技术 | 版本 | 说明 |
-|------|------|------|
-| Vue 3 | ^3.4.19 | 渐进式 JavaScript 框架 |
-| TypeScript | ^5.2.2 | JavaScript 的超集，提供类型系统 |
-| Vite | ^5.1.4 | 下一代前端构建工具 |
-| Element Plus | ^2.5.6 | Vue 3 UI 组件库 |
-| Pinia | ^2.1.7 | Vue 状态管理库 |
-| Vue Router | ^4.3.0 | Vue 路由管理 |
-| Axios | ^1.3.6 | HTTP 请求库 |
-| Sass | ^1.71.1 | CSS 预处理器 |
+| 技术         | 版本    | 说明                            |
+| ------------ | ------- | ------------------------------- |
+| Vue 3        | ^3.4.19 | 渐进式 JavaScript 框架          |
+| TypeScript   | ^5.2.2  | JavaScript 的超集，提供类型系统 |
+| Vite         | ^5.1.4  | 下一代前端构建工具              |
+| Element Plus | ^2.5.6  | Vue 3 UI 组件库                 |
+| Pinia        | ^2.1.7  | Vue 状态管理库                  |
+| Vue Router   | ^4.3.0  | Vue 路由管理                    |
+| Axios        | ^1.3.6  | HTTP 请求库                     |
+| Sass         | ^1.71.1 | CSS 预处理器                    |
 
 ## 项目结构
 
@@ -265,9 +265,7 @@ docker run -p 80:80 cook-pc
 
 ```json
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
 ```
 
@@ -311,14 +309,7 @@ VITE_API_BASE_URL=https://your-api-domain.com/api
 - Safari >= 14
 - Edge >= 88
 
-## 开发团队
+## 相关项目
 
-- 味界探索开发团队
-
-## 许可证
-
-MIT License
-
-## 联系方式
-
-如有问题，请联系项目维护人员。
+- **后端仓库**: [taste-realm](https://github.com/yufengOvO/taste-realm-api)
+- **小程序仓库**: [zhuanzhuanuniapp](https://github.com/yufengOvO/taste-realm-mobile)
