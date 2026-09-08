@@ -309,7 +309,7 @@ VITE_API_BASE_URL=https://your-api-domain.com/api
 - Safari >= 14
 - Edge >= 88
 
-## 相关项目
+## 相关项目s
 
 - **后端仓库**: [taste-realm](https://github.com/yufengOvO/taste-realm-api)
 - **小程序仓库**: [zhuanzhuanuniapp](https://github.com/yufengOvO/taste-realm-mobile)
